@@ -16,39 +16,45 @@
     </form>
 
     <script>
-      const img = document.querySelector('img');
-      const novelGifButton = document.querySelector('body > button');
-      const gifSearchbox = document.querySelector('#gif-searchbox');
+      const img = document.querySelector("img");
+      const novelGifButton = document.querySelector("body > button");
+      const gifSearchbox = document.querySelector("#gif-searchbox");
       const searchButton = document.querySelector(
-        'body > form > div:nth-child(2) > input[type=submit]'
+        "body > form > div:nth-child(2) > input[type=submit]"
       );
-      const gifForm = document.querySelector('body > form');
+      const gifForm = document.querySelector("body > form");
 
       const fetchGif = function fetchGif(gif) {
         fetch(
           `https://api.giphy.com/v1/gifs/translate?api_key=c7vdq9nOSV5UYSaztRWp9ES7CJcG1YN1&s=${gif}`,
-          { mode: 'cors' }
+          { mode: "cors" }
         )
           .then(function (response) {
             return response.json();
           })
           .then(function (response) {
             img.src = response.data.images.original.url;
+          })
+          .catch(function (error) {
+            error = "oh no it did not work!";
           });
       };
 
-      gifForm.addEventListener('submit', (e) => {
+      gifForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        console.log(gifSearchbox.value);
         fetchGif(`${gifSearchbox.value}`);
       });
 
-      novelGifButton.addEventListener('click', () => {
-        fetchGif(`${gifSearchbox.value}`);
+      novelGifButton.addEventListener("click", () => {
+        if (gifSearchbox.value === "") {
+          fetchGif(`cats`);
+        } else {
+          fetchGif(`${gifSearchbox.value}`);
+        }
       });
       window.onload = kittyOnLoad;
       function kittyOnLoad() {
-        fetchGif('cats');
+        fetchGif("cats");
       }
     </script>
   </body>
